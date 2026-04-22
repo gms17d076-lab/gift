@@ -1,196 +1,274 @@
+```html
 <!DOCTYPE html>
 <html lang="mn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Миний хайрт нөхөр</title>
-    <style>
-        :root {
-            --primary-color: #ff4d6d;
-            --dark-color: #590d22;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Миний хайрт нөхөр</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: radial-gradient(circle at center, #fff0f3 0%, #ffccd5 50%, #ff85a1 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            color: var(--dark-color);
-        }
+<style>
+:root {
+    --primary-color: #ff4d6d;
+    --dark-color: #590d22;
+}
 
-        .header { text-align: center; margin-bottom: 25px; }
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at center, #fff0f3 0%, #ffccd5 50%, #ff85a1 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
 
-        .btn {
-            background: var(--dark-color);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 25px;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            font-size: 1rem;
-        }
+/* HEADER /
+.header {
+    text-align: center;
+}
 
-        /* КАРТУУДЫН САВ */
-        .game-container {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            perspective: 1000px;
-            margin-top: 20px;
-        }
+.btn {
+    background: var(--dark-color);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+}
 
-        .card {
-            width: 130px;
-            height: 200px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-        }
+/ CARD CONTAINER /
+.game-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    perspective: 1000px;
+}
 
-        .card.is-flipped {
-            transform: rotateY(180deg);
-        }
+/ CARD /
+.card {
+    width: 130px;
+    height: 200px;
+    position: relative;
+    cursor: pointer;
+}
 
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            /* ЭНЭ ХЭСЭГ ТЕКСТИЙГ НУУЦАЛНА */
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            padding: 10px;
-            box-sizing: border-box;
-        }
+/ INNER /
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s;
+}
 
-        /* КАРТНЫ НҮҮР ТАЛ - ЮУ Ч ХАРАГДАХГҮЙ */
-        .card-front {
-            background: linear-gradient(135deg, var(--primary-color), #ff758f);
-            border: 3px solid white;
-        }
+/ FLIP /
+.card.is-flipped .card-inner {
+    transform: rotateY(180deg);
+}
 
-        .card-front::after {
-            content: "🎁";
-            font-size: 45px;
-        }
+/ POP EFFECT /
+.card.is-flipped {
+    transform: scale(1.05);
+}
 
-        /* КАРТНЫ АР ТАЛ - ЭРГЭХЭД ЗӨВХӨН БИЧИГ ХАРАГДАНА */
-        .card-back {
-            background: white;
-            transform: rotateY(180deg);
-            border: 2px solid var(--primary-color);
-            color: var(--dark-color);
-            text-align: center;
-        }
+/ SIDES /
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
 
-        .card-back h3 { 
-            color: #2ecc71; 
-            font-size: 0.9rem; 
-            margin-bottom: 10px; 
-        }
+/ FRONT /
+.card-front {
+    background: linear-gradient(135deg, var(--primary-color), #ff758f);
+    border: 3px solid white;
+}
 
-        .card-back p { 
-            font-size: 0.85rem; 
-            font-weight: bold;
-            line-height: 1.4;
-            margin: 0;
-        }
+.card-front::after {
+    content: "🎁";
+    font-size: 40px;
+}
 
-        #note-section {
-            display: none;
-            max-width: 400px;
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 30px;
-            border-left: 8px solid var(--primary-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-    </style>
+/ BACK /
+.card-back {
+    background: white;
+    border: 3px solid var(--primary-color);
+    transform: rotateY(180deg);
+    flex-direction: column;
+    text-align: center;
+}
+
+.card-back h3 {
+    color: #2ecc71;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.card-back p {
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/ NOTE /
+#note-section {
+    display: none;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    max-width: 300px;
+    border-left: 5px solid var(--primary-color);
+}
+
+/ POPUP /
+#lovePopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    z-index: 1000;
+}
+
+#lovePopup button {
+    margin-top: 10px;
+    padding: 8px 20px;
+    border: none;
+    background: #ff4d6d;
+    color: white;
+    border-radius: 10px;
+}
+
+</style>
 </head>
+
 <body>
 
-    <div class="header">
-        <h1>Сайн аав, сайн нөхөр байсныг тань өндрөөр үнэлэн энэхүү бяцхан урамшууллыг бэлдлээ ❤️</h1>
-        <button id="shuffleBtn" class="btn" onclick="shuffleCards()">Карт холих</button>
-    </div>
+<div class="header">
+    <h2>Сайн аав, сайн нөхөр байсныг тань өндрөөр үнэлэн бяцхан урамшуулал бэлдлээ ❤️</h2>
+    <button class="btn" onclick="shuffleCards()">Карт холих</button>
+</div>
 
-    <div class="game-container" id="cardContainer">
-        <div class="card" onclick="flipCard(this, 0)">
-            <div class="card-face card-front"></div>
-            <div class="card-back">
-                <h3>Баяр хүргэе!</h3>
-                <p>🎮 7 цаг PC тоглох эрх</p>
-            </div>
-        </div>
-        <div class="card" onclick="flipCard(this, 1)">
-            <div class="card-face card-front"></div>
-            <div class="card-back">
-                <h3>Баяр хүргэе!</h3>
-                <p>🧼 10 хоног гэрийн бүх ажлаас чөлөөлөгдөх</p>
-            </div>
-        </div>
-        <div class="card" onclick="flipCard(this, 2)">
-            <div class="card-face card-front"></div>
-            <div class="card-back">
-                <h3>Баяр хүргэе!</h3>
-                <p>🍻 Найзуудтайгаа нэгэн орой халбага бийв уух эрх</p>
-            </div>
-        </div>
-    </div>
+<div class="game-container" id="cardContainer">
 
-    <div id="note-section">
-        <p id="note-content"></p>
-    </div>
+<div class="card" onclick="flipCard(this,0)">
+<div class="card-inner">
+<div class="card-face card-front"></div>
+<div class="card-face card-back">
+<h3>Баяр хүргэе!</h3>
+<p>🎮 7 цаг PC тоглох эрх</p>
+</div>
+</div>
+</div>
 
-    <script>
-        const notes = [
-            "Заасан хугацаанд тоглох ба хугацаа дуусахтай зэрэгцэн хаалганы гадаа ирсэн байх. Хүчинтэй хугацаа 7 хоног.",
-            "Нэмэлт бэлэг: +4 цаг PC тоглох эрх. Хүчинтэй хугацаа 3 хоног.",
-            "Зөвхөн пиво уух ба согтож агсан тавихгүй байх. 01:00 цаг гэхэд гэрийн хаалгаар орж ирэх."
-        ];
+<div class="card" onclick="flipCard(this,1)">
+<div class="card-inner">
+<div class="card-face card-front"></div>
+<div class="card-face card-back">
+<h3>Баяр хүргэе!</h3>
+<p>🧼 10 хоног гэрийн бүх ажлаас чөлөөлөгдөнө</p>
+</div>
+</div>
+</div>
 
-        let canFlip = true;
+<div class="card" onclick="flipCard(this,2)">
+<div class="card-inner">
+<div class="card-face card-front"></div>
+<div class="card-face card-back">
+<h3>Баяр хүргэе!</h3>
+<p>🍻 Найзуудтайгаа нэг орой халбага бийв уух эрх</p>
+</div>
+</div>
+</div>
 
-        function shuffleCards() {
-            const container = document.getElementById('cardContainer');
-            const cards = Array.from(container.children);
-            cards.forEach(card => card.classList.remove('is-flipped'));
-            document.getElementById('note-section').style.display = 'none';
-            canFlip = true;
+</div>
 
-            setTimeout(() => {
-                for (let i = cards.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    container.appendChild(cards[j]);
-                }
-            }, 300);
-        }
+<div id="note-section">
+<p id="note-content"></p>
+</div>
 
-        function flipCard(cardElement, index) {
-            if (!canFlip) return;
-            
-            cardElement.classList.add('is-flipped');
-            canFlip = false; 
+<!-- POPUP -->
+<div id="lovePopup">
+<h3>❤️ Чамдаа маш их хайртай ❤️</h3>
+<p>Чи бол хамгийн сайн нөхөр, хамгийн сайн аав 💕</p>
+<button onclick="closePopup()">Хаах</button>
+</div>
 
-            setTimeout(() => {
-                document.getElementById('note-content').innerText = "📌 Санамж: " + notes[index];
-                document.getElementById('note-section').style.display = 'block';
-            }, 600);
-        }
+<!-- SOUND -->
+<audio id="sound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
-    </script>
+<script>
+
+const notes = [
+"тоглох хугацаа хангалттай тул заасан хугацаанд тоглоно. хугацаа сунгахыг хориглононо. 7 хоногийн дотор ашиглана.",
+"+4 цаг PC тоглох бонус эрх.",
+"зөвхөн пиво уух ба архи уухыг хориглоно. бар сав орохгүй ба утсаа цэнэгтэй авч явах, хаана хэнтэй яваагаа тогтмол мэдээлэх. 01:00-с өмнө гэртээ ирнэ 😄"
+];
+
+let canFlip = true;
+let flippedCount = 0;
+
+function flipCard(card, index){
+if(!canFlip) return;
+
+card.classList.add("is-flipped");
+document.getElementById("sound").play();
+
+flippedCount++;
+canFlip = false;
+
+setTimeout(()=>{
+document.getElementById("note-content").innerText = "📌 " + notes[index];
+document.getElementById("note-section").style.display = "block";
+},600);
+
+/ бүх карт нээгдсэн үед popup /
+if(flippedCount === 3){
+setTimeout(()=>{
+document.getElementById("lovePopup").style.display = "block";
+},1200);
+}
+}
+
+function closePopup(){
+document.getElementById("lovePopup").style.display = "none";
+}
+
+function shuffleCards(){
+const container = document.getElementById("cardContainer");
+const cards = Array.from(container.children);
+
+cards.forEach(c => c.classList.remove("is-flipped"));
+
+document.getElementById("note-section").style.display = "none";
+document.getElementById("lovePopup").style.display = "none";
+
+canFlip = true;
+flippedCount = 0;
+
+for(let i = cards.length-1; i>0; i--){
+const j = Math.floor(Math.random()(i+1));
+container.appendChild(cards[j]);
+}
+}
+
+</script>
+
 </body>
 </html>
-
+`
