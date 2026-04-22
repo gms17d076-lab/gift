@@ -13,37 +13,57 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            /* 3D мэдрэмж төрүүлэх гүн өнгөтэй арын дэвсгэр */
+            background: radial-gradient(circle at center, #fff0f3 0%, #ffccd5 50%, #ff85a1 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
             color: var(--dark-color);
+            perspective: 1500px;
         }
 
         .header {
             text-align: center;
             margin-bottom: 30px;
             max-width: 600px;
+            z-index: 10;
         }
 
-        h1 { font-size: 1.8rem; margin-bottom: 10px; }
-        p { font-size: 1.1rem; line-height: 1.6; }
+        /* "Сонгох" товчлуурын загвар */
+        .btn-start {
+            background: var(--dark-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(89, 13, 34, 0.3);
+            transition: 0.3s;
+        }
 
+        .btn-start:hover {
+            transform: scale(1.05);
+            background: #800f2f;
+        }
+
+        /* Картуудын сав - Хоорондын зайг gap-аар тохируулсан */
         .game-container {
-            display: flex;
-            gap: 20px;
+            display: none; /* Эхлээд нууц байна */
+            gap: 40px; 
             justify-content: center;
             flex-wrap: wrap;
-            perspective: 1000px;
             margin-bottom: 40px;
+            animation: fadeIn 0.8s ease;
         }
 
         .card {
-            width: 200px;
-            height: 300px;
+            width: 180px; /* Хэмжээг бага зэрэг жижигсгэсэн */
+            height: 270px;
             position: relative;
             transform-style: preserve-3d;
             transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -58,103 +78,109 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden;
+            backface-visibility: hidden; /* Ар талыг нэвт харагдуулахгүй */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             text-align: center;
+            overflow: hidden;
         }
 
         .card-front {
-            background: var(--primary-color);
-            border: 5px solid white;
+            background: linear-gradient(45deg, var(--primary-color), #ff758f);
+            border: 4px solid white;
         }
 
         .card-front::after {
             content: "🎁";
-            font-size: 50px;
+            font-size: 60px;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
         }
 
+        /* КАРТНЫ АР ТАЛ - ЗӨВ ХАРАГДАХ ХЭСЭГ */
         .card-back {
             background: white;
-            transform: rotateY(180deg);
+            transform: rotateY(180deg); /* Энд 180 эргүүлснээр бичиг зөв харна */
             border: 2px solid var(--primary-color);
         }
 
-        .card-back h3 { color: #2ecc71; margin-bottom: 10px; }
+        /* Ар талын зураг */
+        .card-image {
+            width: 100%;
+            height: 60%;
+            object-fit: cover;
+            background: #eee;
+        }
+
+        .card-content {
+            padding: 10px;
+            height: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-back h3 { 
+            color: #2ecc71; 
+            margin: 0 0 5px 0; 
+            font-size: 1rem;
+        }
 
         #note-section {
             display: none;
-            max-width: 600px;
-            background: #fff;
-            padding: 30px;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            position: relative;
-            border-left: 5px solid var(--primary-color);
-            animation: fadeIn 1s ease;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-left: 8px solid var(--primary-color);
+            animation: slideUp 0.5s ease;
         }
 
-        #note-section::before {
-            content: "📌 Санамж:";
-            font-weight: bold;
-            display: block;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .btn-shuffle {
-            background: var(--dark-color);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: 0.3s;
-        }
-
-        .btn-shuffle:hover { background: #800f2f; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>Сайн аав, сайн нөхөр! ❤️</h1>
-        <p>Чамайг гэр бүлийнхээ төлөө хичээж байгааг чинь өндрөөр үнэлэн дараах урамшууллын нэгийг сонгохыг урьж байна.</p>
-        <button class="btn-shuffle" onclick="shuffleCards()">Карт холих</button>
+        <p id="main-text">Чамайг гэр бүлийнхээ төлөө хичээж байгааг чинь үнэлэн урамшуулал бэлдлээ.</p>
+        <button id="startBtn" class="btn-start" onclick="showGame()">Сонгох</button>
     </div>
 
     <div class="game-container" id="cardContainer">
         <div class="card" onclick="flipCard(this, 0)">
             <div class="card-face card-front"></div>
             <div class="card-back">
-                <h3>Баяр хүргэе!</h3>
-                <p>🎮 7 цаг PC тоглох эрх</p>
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400" class="card-image">
+                <div class="card-content">
+                    <h3>Баяр хүргэе!</h3>
+                    <p>🎮 7 цаг PC тоглох эрх</p>
+                </div>
             </div>
         </div>
         <div class="card" onclick="flipCard(this, 1)">
             <div class="card-face card-front"></div>
             <div class="card-back">
-                <h3>Баяр хүргэе!</h3>
-                <p>🧼 10 хоног гэрийн ажлаас чөлөөлөгдөх эрх</p>
+                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" class="card-image">
+                <div class="card-content">
+                    <h3>Баяр хүргэе!</h3>
+                    <p>🧼 10 хоног гэрийн ажлаас чөлөөлөгдөх</p>
+                </div>
             </div>
         </div>
         <div class="card" onclick="flipCard(this, 2)">
             <div class="card-face card-front"></div>
             <div class="card-back">
-                <h3>Баяр хүргэе!</h3>
-                <p>🍻 Найзуудтайгаа халбага пиво уух эрх</p>
+                <img src="https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=400" class="card-image">
+                <div class="card-content">
+                    <h3>Баяр хүргэе!</h3>
+                    <p>🍻 Найзуудтайгаа пиво уух эрх</p>
+                </div>
             </div>
         </div>
     </div>
@@ -165,39 +191,40 @@
 
     <script>
         const notes = [
-            "Заасан хугацаанд тоглох ба хугацаа дуусахтай зэрэгцэн хаалганы гадаа ирсэн байх. Тоглох хангалттай цаг өгсөн тул хугацаа сунгахыг хатуу хориглоно. Хүчинтэй хугацаа 7 хоног.",
+            "Заасан хугацаанд тоглох ба хугацаа дуусахтай зэрэгцэн хаалганы гадаа ирсэн байх. Хүчинтэй хугацаа 7 хоног.",
             "Нэмэлт бэлэг: +4 цаг PC тоглох эрх. Хүчинтэй хугацаа 3 хоног.",
-            "Зөвхөн пиво уух ба архи уухыг хориглоно. Хэтрүүлэн хэрэглэж согтож, агсан тавьж, үр зулзагаа айлгаж, урамшууллыг уур бухимдал болгон хувиргахыг хатуу хориглоно. Баар цэнгээний газар орохоор бол заавал мэдэгдэх, 01:00 цаг гэхэд гэрийн хаалгаар орж ирэх."
+            "Зөвхөн пиво уух ба согтож агсан тавихгүй байх. 01:00 цаг гэхэд гэрийн хаалгаар орж ирэх."
         ];
 
-        let canFlip = true;
+        let canFlip = false;
 
-        function shuffleCards() {
+        function showGame() {
+            // "Сонгох" товч дарахад картууд гарч ирнэ
+            document.getElementById('cardContainer').style.display = 'flex';
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('main-text').innerText = "Нэг картыг сонгож эргүүлээрэй!";
+            canFlip = true;
+            
+            // Картуудыг холих
             const container = document.getElementById('cardContainer');
             const cards = Array.from(container.children);
-            cards.forEach(card => card.classList.remove('is-flipped'));
-            document.getElementById('note-section').style.display = 'none';
-            canFlip = true;
-
-            setTimeout(() => {
-                for (let i = cards.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    container.appendChild(cards[j]);
-                }
-            }, 300);
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                container.appendChild(cards[j]);
+            }
         }
 
         function flipCard(cardElement, index) {
             if (!canFlip) return;
             
             cardElement.classList.add('is-flipped');
-            canFlip = false; // Зөвхөн нэг карт сонгох боломжтой
+            canFlip = false; 
 
             const noteSection = document.getElementById('note-section');
             const noteContent = document.getElementById('note-content');
             
             setTimeout(() => {
-                noteContent.innerText = notes[index];
+                noteContent.innerText = "📌 Санамж: " + notes[index];
                 noteSection.style.display = 'block';
             }, 600);
         }
